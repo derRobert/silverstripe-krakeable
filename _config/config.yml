@@ -9,3 +9,6 @@ KrakenService:
     - jpg
     - jpeg
     - png
+Image:
+  extensions:
+    - Krakeable    
