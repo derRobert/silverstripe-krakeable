@@ -71,6 +71,34 @@ class KrakenService extends Object
     }
 
     /**
+     * optimize an image by remote URL
+     * @param String $file
+     * @return Array
+     */
+    public function optimizeImageByURL($url)
+    {
+        $kraken = $this->getConnection();
+
+        if ($kraken) {
+
+            $params = array(
+                "url"  => $url,
+                "lossy" => $this->getLossy(),
+                //"dev"   => $this->getDev()
+            );
+
+            if ($this->getWait()) {
+                $params['wait'] = true;
+            }
+
+            set_time_limit(400);
+            $data = $kraken->url($params);
+
+            return $data;
+        }
+    }
+
+    /**
      * Uses cURL to fetch an optimized image from Kraken
      * @param String $krakedUrl
      * @return JSON
