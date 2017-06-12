@@ -1,5 +1,6 @@
 ---
 Name: silverstripe-krakeable
+After: 'framework/*','cms/*'
 ---
 KrakenService:
   api_key: null
@@ -11,4 +12,4 @@ KrakenService:
     - png
 Image:
   extensions:
-    - Krakeable    
+    - Krakeable
