@@ -3,6 +3,7 @@ Name: silverstripe-krakeable
 After: 'framework/*','cms/*'
 ---
 KrakenService:
+  enabled: false
   api_key: null
   api_secret: null
   process_on_upload: true
