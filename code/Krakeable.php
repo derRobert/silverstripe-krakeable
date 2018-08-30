@@ -42,7 +42,7 @@ class Krakeable extends Extension
         /** @var Image $file */
         $file = $this->owner;
         $krakenSvcConfig = Config::inst()->forClass('KrakenService');
-        if (!in_array($file->getExtension(), $krakenSvcConfig->process_extensions)) {
+        if (!in_array(strtolower($file->getExtension()), $krakenSvcConfig->process_extensions)) {
             return false;
         }
         if (!$krakenSvcConfig->enabled) {
