@@ -12,19 +12,12 @@ class Krakeable extends Extension
 
     public function onAfterUpload()
     {
+        $krakenSvcConfig = Config::inst()->forClass('KrakenService');
         /** @var Image $file */
         $file = $this->owner;
-        $krakenSvcConfig = Config::inst()->forClass('KrakenService');
-        if (!in_array($file->getExtension(), $krakenSvcConfig->process_extensions)) {
-            return;
+        if( $this->canKrake() && $krakenSvcConfig->process_on_upload ) {
+            self::processImage($file);
         }
-        if (!$krakenSvcConfig->enabled) {
-            return;
-        }
-        if (!$krakenSvcConfig->process_on_upload) {
-            return;
-        }
-        self::processImage($file);
     }
 
     public static function processImage(Image $image) {
@@ -36,10 +29,28 @@ class Krakeable extends Extension
             try {
                 $newFile = file_get_contents($response['kraked_url']);
                 file_put_contents($fullPath, $newFile);
+                return true;
             } catch( Exception $ex ) {
-                user_error('Unable to write kraked image to file');
+                return 'Unable to write kraked image to file';
             }
+        } else {
+            return $response['error'];
         }
+    }
+
+    public function canKrake() {
+        /** @var Image $file */
+        $file = $this->owner;
+        $krakenSvcConfig = Config::inst()->forClass('KrakenService');
+        if (!in_array($file->getExtension(), $krakenSvcConfig->process_extensions)) {
+            return false;
+        }
+        if (!$krakenSvcConfig->enabled) {
+            return false;
+        }
+        $can = true;
+        $this->owner->extend('updateCanKrake', $can);
+        return $can;
     }
 
 }

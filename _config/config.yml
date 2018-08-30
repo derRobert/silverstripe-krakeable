@@ -1,6 +1,5 @@
 ---
-Name: silverstripe-krakeable
-After: 'framework/*','cms/*'
+Name: 'silverstripe-krakeable'
 ---
 KrakenService:
   enabled: false
